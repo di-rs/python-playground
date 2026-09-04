@@ -1,7 +1,29 @@
 [project]
-name = "python-for-pros"
+name = "release-tracker"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.14,<3.15"
-dependencies = []
+authors = [
+    { name = "Di P", email = "popov.dmitriiy@gmail.com" }
+]
+requires-python = "==3.14.*"
+dependencies = [
+    "alembic>=1.19.2",
+    "fastapi[standard]>=0.115.0",
+    "psycopg[binary]>=3.3.5",
+    "pydantic-settings>=2.15.0",
+    "sqlalchemy>=2.0.52",
+    "sqlmodel>=0.0.42",
+]
+
+[tool.fastapi]
+entrypoint = "release_tracker.main:app"
+
+[build-system]
+requires = ["uv_build>=0.12.9,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
