@@ -8,9 +8,8 @@ from .database import get_session
 from .models import Project, Task, User
 from .security import get_current_user
 
-CurrentUserDep = Annotated[User, Depends(get_current_user)]
-
 SessionDep = Annotated[Session, Depends(get_session)]
+CurrentUserDep = Annotated[User, Depends(get_current_user)]
 
 
 def get_project_or_404(project_id: int, session: SessionDep) -> Project:

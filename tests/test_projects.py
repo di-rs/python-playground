@@ -1,8 +1,8 @@
 from fastapi.testclient import TestClient
 
 
-def test_create_project(client: TestClient):
-    response = client.post(
+def test_create_project(auth_client: TestClient):
+    response = auth_client.post(
         "/projects",
         json={
             "name": "New Project",

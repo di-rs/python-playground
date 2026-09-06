@@ -1,25 +1,32 @@
 import logging
 import time
+from contextlib import asynccontextmanager
+from typing import AsyncGenerator
 
 from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import IntegrityError
 
+from . import __version__
 from .config import configure_logging, get_settings
 from .routers import auth, health, projects, tasks
 
-configure_logging(debug=get_settings().debug)
+APP_NAME = "Release Tracker API"
 logger = logging.getLogger(__name__)
 
-app = FastAPI(
-    title="Release Tracker API",
-    description="An API for tracking project milestones and tasks for devs.",
-)
 
-app.include_router(health.router)
-app.include_router(auth.router)
-app.include_router(projects.router)
-app.include_router(tasks.router)
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
+    configure_logging(debug=get_settings().debug)
+    yield
+
+
+app = FastAPI(
+    title=APP_NAME,
+    version=__version__,
+    description="An API for tracking project milestones and tasks for devs.",
+    lifespan=lifespan,
+)
 
 
 @app.exception_handler(IntegrityError)
@@ -53,9 +60,18 @@ async def log_requests(request: Request, call_next):
     return response
 
 
+app.include_router(health.router)
+app.include_router(auth.router)
+app.include_router(projects.router)
+app.include_router(tasks.router)
+
+
 @app.get("/")
 def read_root() -> dict[str, str]:
+    logger.debug("Serving root metadata")
     return {
-        "app": "Release Tracker API",
+        "app": APP_NAME,
+        "version": __version__,
         "docs": "/docs",
+        "health": "/health",
     }

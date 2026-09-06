@@ -1,8 +1,12 @@
+import logging
+
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 from sqlalchemy import text
 
-from release_tracker.dependencies import SessionDep
+from ..dependencies import SessionDep
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["meta"])
 
@@ -11,6 +15,7 @@ router = APIRouter(tags=["meta"])
 def healthcheck(session: SessionDep) -> dict[str, str] | JSONResponse:
     try:
         session.execute(text("SELECT 1"))
+        logger.debug("Healthcheck requested")
         return {"status": "healthy"}
     except Exception:
         return JSONResponse(

@@ -7,6 +7,10 @@ from sqlalchemy import Column, DateTime
 from sqlmodel import Field, Relationship, SQLModel
 
 
+def utc_now() -> datetime:
+    return datetime.now(UTC)
+
+
 class TaskStatus(StrEnum):
     planned = auto()
     in_progress = auto()
@@ -19,10 +23,6 @@ class TaskPriority(StrEnum):
     medium = auto()
     high = auto()
     urgent = auto()
-
-
-def utc_now() -> datetime:
-    return datetime.now(UTC)
 
 
 ProjectName = Annotated[
@@ -45,7 +45,9 @@ class Project(ProjectBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     slug: str = Field(unique=True)
 
-    tasks: list[Task] = Relationship(back_populates="project")
+    tasks: list[Task] = Relationship(
+        back_populates="project", cascade_delete=True
+    )
 
     created_at: datetime = Field(
         default_factory=utc_now,
@@ -82,6 +84,19 @@ class Task(TaskBase, table=True):
 
     project: Project = Relationship(back_populates="tasks")
 
+    created_at: datetime = Field(
+        default_factory=utc_now,
+        sa_column=Column(DateTime(timezone=True), nullable=False),
+    )
+    updated_at: datetime = Field(
+        default_factory=utc_now,
+        sa_column=Column(
+            DateTime(timezone=True),
+            nullable=False,
+            onupdate=utc_now,
+        ),
+    )
+
     @property
     def project_name(self) -> str:
         return self.project.name
@@ -89,11 +104,6 @@ class Task(TaskBase, table=True):
     @property
     def project_slug(self) -> str:
         return self.project.slug
-
-    created_at: datetime = Field(
-        default_factory=utc_now,
-        sa_column=Column(DateTime(timezone=True), nullable=False),
-    )
 
 
 class TaskCreate(TaskBase):
@@ -114,6 +124,7 @@ class TaskRead(TaskBase):
     project_name: str
     project_slug: str
     created_at: datetime
+    updated_at: datetime
 
 
 class UserBase(SQLModel):
