@@ -15,9 +15,7 @@ def list_projects(session: SessionDep):
 @router.post(
     "", response_model=ProjectRead, status_code=status.HTTP_201_CREATED
 )
-def create_project(
-    payload: ProjectCreate, session: SessionDep, current_user: CurrentUserDep
-):
+def create_project(payload: ProjectCreate, session: SessionDep):
     return crud.create_project(payload=payload, session=session)
 
 
@@ -27,7 +25,9 @@ def get_project(project: ProjectDep):
 
 
 @router.delete("/{project_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_project(project: ProjectDep, session: SessionDep):
+def delete_project(
+    project: ProjectDep, session: SessionDep, current_user: CurrentUserDep
+):
     crud.delete_project(session, project)
 
 

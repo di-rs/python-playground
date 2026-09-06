@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Query, status
 
 from .. import crud
-from ..dependencies import ProjectDep, SessionDep, TaskDep
+from ..dependencies import CurrentUserDep, ProjectDep, SessionDep, TaskDep
 from ..models import TaskCreate, TaskPriority, TaskRead, TaskStatus, TaskUpdate
 
 router = APIRouter(tags=["tasks"])
@@ -35,7 +35,12 @@ def list_tasks(
     status_code=status.HTTP_201_CREATED,
     response_model=TaskRead,
 )
-def create_task(project: ProjectDep, payload: TaskCreate, session: SessionDep):
+def create_task(
+    project: ProjectDep,
+    payload: TaskCreate,
+    session: SessionDep,
+    current_user: CurrentUserDep,
+):
     return crud.create_task(session, project.id, payload)
 
 
@@ -49,10 +54,17 @@ def get_task(task: TaskDep):
 @router.patch(
     "/tasks/{task_id}", status_code=status.HTTP_200_OK, response_model=TaskRead
 )
-def update_task(task: TaskDep, session: SessionDep, payload: TaskUpdate):
+def update_task(
+    task: TaskDep,
+    session: SessionDep,
+    payload: TaskUpdate,
+    current_user: CurrentUserDep,
+):
     return crud.update_task(session, task, payload)
 
 
 @router.delete("/tasks/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_task(task: TaskDep, session: SessionDep):
+def delete_task(
+    task: TaskDep, session: SessionDep, current_user: CurrentUserDep
+):
     crud.delete_task(session, task)

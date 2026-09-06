@@ -10,6 +10,7 @@ tasks = [
 
 open_titles = [task["title"] for task in tasks if not task["done"]]
 
+
 def validate_project_name(name: str) -> str:
     stripped = name.strip()
     if len(stripped) == 0:

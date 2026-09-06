@@ -1,5 +1,4 @@
 from datetime import UTC, datetime
-import logging
 
 from pydantic import EmailStr
 from sqlalchemy.orm import selectinload
@@ -19,8 +18,6 @@ from .models import (
     TaskUpdate,
     User,
 )
-
-logger = logging.getLogger(__name__)
 
 
 def slugify(value: str) -> str:
@@ -144,7 +141,6 @@ def create_user(
         hashed_password=get_password_hash(password),
         is_active=is_active,
     )
-    logger.debug(user.email)
     session.add(user)
     session.commit()
     session.refresh(user)

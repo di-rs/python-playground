@@ -1,4 +1,3 @@
-import logging
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -10,7 +9,6 @@ from release_tracker.security import create_access_token, verify_password
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
-logger = logging.getLogger(__name__)
 
 @router.post("/token")
 def login_for_access_token(
@@ -45,7 +43,6 @@ def login_for_access_token(
     status_code=status.HTTP_201_CREATED,
 )
 def register(payload: models.UserCreate, session: SessionDep):
-    logger.error(payload)
     return crud.create_user(
         session, email=payload.email, password=payload.password, is_active=True
     )

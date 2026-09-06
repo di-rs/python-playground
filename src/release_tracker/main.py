@@ -22,7 +22,9 @@ app.include_router(tasks.router)
 
 
 @app.exception_handler(IntegrityError)
-def handle_integrity_error(request: Request, exc: IntegrityError):
+def handle_integrity_error(
+    request: Request, exc: IntegrityError
+) -> JSONResponse:
     logger.warning(
         "IntegrityError handled method=%s path=%s",
         request.method,

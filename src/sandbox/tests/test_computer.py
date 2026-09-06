@@ -1,6 +1,7 @@
 import pytest
-from computer import Computer
 from pydantic import ValidationError
+
+from sandbox.computer import Computer
 
 
 def test_computer_valid():
