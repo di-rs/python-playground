@@ -25,4 +25,4 @@ def configure_logging(*, debug: bool) -> None:
 
 @lru_cache
 def get_settings() -> Settings:
-    return Settings()
+    return Settings()  # type: ignore[call-arg]
