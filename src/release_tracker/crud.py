@@ -1,9 +1,11 @@
 from datetime import UTC, datetime
 
+from pydantic import EmailStr
 from sqlalchemy.orm import selectinload
 from sqlmodel import Session, select
 
 from release_tracker.dependencies import SessionDep
+from release_tracker.security import get_password_hash
 
 from .models import (
     Project,
@@ -14,6 +16,7 @@ from .models import (
     TaskPriority,
     TaskStatus,
     TaskUpdate,
+    User,
 )
 
 
@@ -123,3 +126,22 @@ def update_task(session: Session, task: Task, payload: TaskUpdate) -> Task:
 def delete_task(session: Session, task: Task) -> None:
     session.delete(task)
     session.commit()
+
+
+def get_user_by_email(session: Session, email: EmailStr) -> User | None:
+    statement = select(User).where(User.email == email)
+    return session.exec(statement).first()
+
+
+def create_user(
+    session: Session, *, email: str, password: str, is_active: bool = True
+) -> User:
+    user = User(
+        email=email.lower(),
+        hashed_password=get_password_hash(password),
+        is_active=is_active,
+    )
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    return user

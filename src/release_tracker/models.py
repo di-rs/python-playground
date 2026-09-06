@@ -1,8 +1,8 @@
 from datetime import UTC, date, datetime
 from enum import StrEnum, auto
-from typing import Annotated
+from typing import Annotated, Literal
 
-from pydantic import StringConstraints
+from pydantic import EmailStr, StringConstraints
 from sqlalchemy import Column, DateTime
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -114,3 +114,27 @@ class TaskRead(TaskBase):
     project_name: str
     project_slug: str
     created_at: datetime
+
+
+class UserBase(SQLModel):
+    email: EmailStr = Field(unique=True)
+    is_active: bool = True
+
+
+class User(UserBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    hashed_password: str
+
+
+class UserCreate(SQLModel):
+    email: EmailStr
+    password: str
+
+
+class UserRead(UserBase):
+    id: int
+
+
+class AccessToken(SQLModel):
+    access_token: str
+    token_type: Literal["bearer"] = "bearer"

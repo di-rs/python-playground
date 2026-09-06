@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.exc import IntegrityError
 
 from .config import configure_logging, get_settings
-from .routers import projects, tasks
+from .routers import auth, projects, tasks
 
 configure_logging(debug=get_settings().debug)
 logger = logging.getLogger(__name__)
@@ -16,7 +16,7 @@ app = FastAPI(
     description="An API for tracking project milestones and tasks for devs.",
 )
 
-
+app.include_router(auth.router)
 app.include_router(projects.router)
 app.include_router(tasks.router)
 

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status
 
 from .. import crud
-from ..dependencies import ProjectDep, SessionDep
+from ..dependencies import CurrentUserDep, ProjectDep, SessionDep
 from ..models import ProjectCreate, ProjectRead, ProjectUpdate
 
 router = APIRouter(prefix="/projects", tags=["projects"])
@@ -15,7 +15,9 @@ def list_projects(session: SessionDep):
 @router.post(
     "", response_model=ProjectRead, status_code=status.HTTP_201_CREATED
 )
-def create_project(payload: ProjectCreate, session: SessionDep):
+def create_project(
+    payload: ProjectCreate, session: SessionDep, current_user: CurrentUserDep
+):
     return crud.create_project(payload=payload, session=session)
 
 
