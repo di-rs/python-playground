@@ -1,11 +1,10 @@
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config, pool
-from sqlmodel import SQLModel
-
 from alembic import context
 from release_tracker import models  # noqa: F401
 from release_tracker.config import get_settings
+from sqlalchemy import engine_from_config, pool
+from sqlmodel import SQLModel
 
 config = context.config
 

@@ -14,7 +14,7 @@ services:
       retries: 5
     volumes:
       - postgres_data:/var/lib/postresql/data
-                  
+
 
 volumes:
   postgres_data:

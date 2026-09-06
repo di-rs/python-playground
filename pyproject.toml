@@ -1,25 +1,12 @@
 [project]
-name = "release-tracker"
+name = "python-sandbox"
 version = "0.1.0"
-description = "Add your description here"
+description = "Python sandbox to learn and play"
 readme = "README.md"
 authors = [
     { name = "Di P", email = "popov.dmitriiy@gmail.com" }
 ]
 requires-python = "==3.14.*"
-dependencies = [
-    "alembic>=1.19.2",
-    "fastapi[standard]>=0.115.0",
-    "psycopg[binary]>=3.3.5",
-    "pwdlib[argon2]>=0.3.1",
-    "pydantic-settings>=2.15.0",
-    "pyjwt>=2.13.0",
-    "sqlalchemy>=2.0.52",
-    "sqlmodel>=0.0.42",
-]
-
-[tool.fastapi]
-entrypoint = "release_tracker.main:app"
 
 [tool.mypy]
 python_version = "3.14"
@@ -32,12 +19,18 @@ exclude = [
     "^alembic/versions/"
 ]
 
-[build-system]
-requires = ["uv_build>=0.12.9,<0.13.0"]
-build-backend = "uv_build"
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "apps/release_tracker/tests",
+    "apps/sandbox/tests",
+]
 
 [dependency-groups]
 dev = [
+    "basedpyright",
     "coverage>=7.16.0",
     "mypy>=2.3.1",
     "prek>=0.5.2",

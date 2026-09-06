@@ -1,7 +1,6 @@
-from sqlmodel import Session
-
 from release_tracker.database import get_engine
 from release_tracker.models import Project
+from sqlmodel import Session
 
 
 def seed() -> None:

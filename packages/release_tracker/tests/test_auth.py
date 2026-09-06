@@ -1,7 +1,6 @@
 from collections.abc import Callable
 
 from fastapi.testclient import TestClient
-
 from release_tracker.models import User
 
 
