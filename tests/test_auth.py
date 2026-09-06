@@ -91,25 +91,25 @@ def test_me_endpoint_rejects_garbage_token(client: TestClient) -> None:
 def test_register_creates_user(client: TestClient) -> None:
     response = client.post(
         "/auth/register",
-        data={"email": "test@test.test", "password": "test-password"},
+        json={"email": "test@test.com", "password": "test-password"},
     )
     assert response.status_code == 201
 
     data = response.json()
-    assert data["email"] == "test@test.test"
+    assert data["email"] == "test@test.com"
     assert data["is_active"]
-    assert data["hashed_password"] is None
+    assert "hashed_password" not in data
 
 
 def test_register_then_login(client: TestClient) -> None:
     client.post(
         "/auth/register",
-        data={"email": "test@test.test", "password": "test-password"},
+        json={"email": "test@test.com", "password": "test-password"},
     )
     response = client.post(
         "/auth/token",
         data={
-            "username": "test@test.test",
+            "username": "test@test.com",
             "password": "test-password",
         },
     )
