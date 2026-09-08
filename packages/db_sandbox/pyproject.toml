@@ -1,0 +1,17 @@
+[project]
+name = "db-sandbox"
+version = "0.1.0"
+dependencies = [
+    "fastapi[standard]>=0.115.0",
+    "pgvector>=0.5.0",
+    "psycopg[binary,pool]>=3.3.5",
+    "pydantic-settings>=2.15.0",
+    "requests>=2.34.2",
+]
+
+[tool.fastapi]
+entrypoint = "db_sandbox.main:app"
+
+[build-system]
+requires = ["uv_build>=0.12.9,<0.13.0"]
+build-backend = "uv_build"
