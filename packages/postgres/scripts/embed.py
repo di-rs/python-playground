@@ -1,9 +1,9 @@
 import sys
 from sys import argv
 
-from db_sandbox.config import get_settings
-from db_sandbox.database import get_pg_pool
 from pgvector.psycopg import register_vector
+from postgres.config import get_settings
+from postgres.database import get_pg_pool
 from requests import request
 
 BATCH_SIZE = 50

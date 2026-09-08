@@ -3,9 +3,8 @@ import time
 
 from fastapi import FastAPI, Request, status
 
-from db_sandbox.database import PgClientDep
-
 from . import __version__
+from .database import PgClientDep
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +32,7 @@ async def log_requests(request: Request, call_next):
 
 
 @app.get("/board/{board_id}", status_code=status.HTTP_200_OK)
-def root_get(client: PgClientDep, board_id: int):
+def get_board(client: PgClientDep, board_id: int):
     comments = client.execute(
         t"""SELECT * FROM comments
         NATURAL LEFT JOIN rich_content

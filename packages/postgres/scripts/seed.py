@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from db_sandbox.database import get_pg_pool
+from postgres.database import get_pg_pool
 
-from packages.db_sandbox.scripts.embed import generate_comments_embeddings
+from packages.postgres.scripts.embed import generate_comments_embeddings
 
 
 def seed() -> None:

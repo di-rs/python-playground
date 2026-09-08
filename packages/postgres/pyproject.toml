@@ -1,5 +1,5 @@
 [project]
-name = "db-sandbox"
+name = "postgres"
 version = "0.1.0"
 dependencies = [
     "fastapi[standard]>=0.115.0",
@@ -10,7 +10,7 @@ dependencies = [
 ]
 
 [tool.fastapi]
-entrypoint = "db_sandbox.main:app"
+entrypoint = "postgres.main:app"
 
 [build-system]
 requires = ["uv_build>=0.12.9,<0.13.0"]

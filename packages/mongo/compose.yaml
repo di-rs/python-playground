@@ -1,0 +1,22 @@
+services:
+  mongo:
+    image: mongo:8.2.5
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mysecretpassword
+    healthcheck:
+      test: [
+        "CMD-SHELL",
+        "mongosh --quiet --host localhost --username \"$${MONGO_INITDB_ROOT_USERNAME}\" --password \"$${MONGO_INITDB_ROOT_PASSWORD}\" --authenticationDatabase admin --eval 'if (!db.adminCommand({ ping: 1 }).ok) quit(1)'",
+      ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - mongo_data:/data/db
+
+
+volumes:
+  mongo_data:
