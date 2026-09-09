@@ -1,0 +1,17 @@
+services:
+  db:
+    image: redis:8.6-trixie
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:
