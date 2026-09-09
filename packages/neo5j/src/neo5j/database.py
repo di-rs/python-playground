@@ -1,13 +1,13 @@
-from collections.abc import Generator
+from functools import lru_cache
 from typing import Annotated
 
 from fastapi import Depends
-from neo4j import GraphDatabase
-from neo4j._sync.driver import Driver
+from neo4j import Driver, GraphDatabase
 
 from .config import get_settings
 
 
+@lru_cache
 def get_neo4j_db():
     return GraphDatabase.driver(
         get_settings().database_url,
@@ -15,9 +15,4 @@ def get_neo4j_db():
     )
 
 
-def get_neo4j_client() -> Generator[Driver]:
-    with get_neo4j_db() as driver:
-        yield driver
-
-
-DbClientDep = Annotated[Driver, Depends(get_neo4j_client)]
+DbClientDep = Annotated[Driver, Depends(get_neo4j_db)]
