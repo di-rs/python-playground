@@ -1,0 +1,23 @@
+services:
+  db:
+    image: neo4j:2026-community-trixie
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/mysecretpassword
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "cypher-shell -u neo4j -p mysecretpassword 'RETURN 1' >/dev/null 2>&1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    volumes:
+      - neo4j_data:/data1
+
+volumes:
+  neo4j_data:
