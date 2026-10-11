@@ -6,10 +6,10 @@ readme = "README.md"
 authors = [
     { name = "Di P", email = "popov.dmitriiy@gmail.com" }
 ]
-requires-python = "==3.14.*"
+requires-python = "==3.15.*"
 
 [tool.mypy]
-python_version = "3.14"
+python_version = "3.15"
 warn_unused_ignores = true
 warn_reduncant_casts = true
 disallow_incomplete_defs = true
