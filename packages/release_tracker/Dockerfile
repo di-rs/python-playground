@@ -1,10 +1,10 @@
-FROM python:3.15-slim
+FROM python:3.15-rc-alpine
 
-COPY --from=ghcr.io/astral-sh/uv:0.12.9 /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.13.0 /uv /uvx /bin/
 
 ENV UV_COMPILE_BYTECODE=1
 ENV PYTHONUNBUFFERED=1
-ENV PATH="/app/.venv/biin:$PATH"
+ENV PATH="/app/.venv/bin:$PATH"
 
 WORKDIR /app
 
@@ -18,4 +18,4 @@ RUN uv sync --frozen --no-dev
 
 EXPOSE 8000
 
-CMD ["fastapi", "run"l
+CMD ["fastapi", "run"]

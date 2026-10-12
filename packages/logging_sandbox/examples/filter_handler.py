@@ -19,9 +19,6 @@ class InfoFilter(logging.Filter):
         return record.levelno == logging.INFO or record.levelno == logging.ERROR
 
 
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
-
 stream_handler = logging.StreamHandler(sys.stdout)
 stream_handler.setLevel(logging.DEBUG)
 stream_handler.setFormatter(
@@ -33,6 +30,8 @@ stream_handler.setFormatter(
 stream_handler.addFilter(InfoFilter())
 stream_handler.addFilter(UserContextFilter())
 
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 logger.addHandler(stream_handler)
 
 logger.debug("Creating an order")

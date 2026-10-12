@@ -1,0 +1,30 @@
+services:
+  victorialogs:
+    image: docker.io/victoriametrics/victoria-logs:latest
+    ports:
+      - "9428:9428"
+    command:
+      - -storageDataPath=/victoria-logs-data
+      - -splunk.msgField=event.line.message,event.line
+      - -splunk.streamFields=event.line.service,event.line.environment,event.tag
+    volumes:
+      - victoria-logs-data:/victoria-logs-data
+
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: production
+    depends_on:
+      - victorialogs
+    logging:
+      driver: splunk
+      options:
+        splunk-url: http://127.0.0.1:9428
+        splunk-token: any-token
+        splunk-format: json
+        splunk-verify-connection: "false"
+
+volumes:
+  victoria-logs-data:
