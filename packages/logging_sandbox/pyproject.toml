@@ -3,8 +3,13 @@ name = "logging_sandbox"
 version = "0.1.0"
 
 dependencies = [
+    "fastapi[standard]>=0.141.1",
     "pydantic>=2.13.5",
+    "uvicorn>=0.52.4",
 ]
+
+[tool.fastapi]
+entrypoint = "logging_sandbox.main:app"
 
 [build-system]
 requires = ["uv_build>=0.12.9,<0.13.0"]
